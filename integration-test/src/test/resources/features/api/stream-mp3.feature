@@ -7,5 +7,6 @@ Feature: Stream API for MP3
   Scenario: Airsonic sends stream data
     When A stream request is sent
     Then The response bytes are equal
+    Then Dump the headers
     # TODO check length
 

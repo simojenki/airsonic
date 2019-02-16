@@ -3,8 +3,9 @@ package org.airsonic.test.cucumber.steps.api;
 import cucumber.api.java8.En;
 import org.airsonic.test.cucumber.server.AirsonicServer;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.HexDump;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -22,6 +23,7 @@ public class StreamStepDef implements En {
     private CloseableHttpClient client;
     private boolean closed = false;
     private byte[] body;
+    private Header[] headers;
 
     public StreamStepDef(AirsonicServer server) {
         this.client = HttpClientBuilder.create().build();
@@ -42,7 +44,7 @@ public class StreamStepDef implements En {
         });
 
         Then("The response bytes are equal", () -> {
-            ensureBodyRead();
+            ensureResponseRead();
 
             FileUtils.writeByteArrayToFile(new File("/tmp/bytearray"), body);
 
@@ -52,15 +54,30 @@ public class StreamStepDef implements En {
 
             Assert.assertArrayEquals(expected, body);
         });
+        Then("^Dump the headers$", () -> {
+            ensureResponseRead();
+
+            System.out.println("Headers:");
+            for (Header header : headers) {
+                System.out.print(header.getName());
+                System.out.print(": ");
+                for (HeaderElement element : header.getElements()) {
+                    System.out.print(element);
+                    System.out.print(", ");
+                }
+                System.out.println();
+            }
+        });
 
 
     }
 
-    void ensureBodyRead() throws IOException {
+    void ensureResponseRead() throws IOException {
         if(closed) {
             return;
         } else {
             this.body = EntityUtils.toByteArray(response.getEntity());
+            this.headers = response.getAllHeaders();
             closed = true;
             response.close();
         }
