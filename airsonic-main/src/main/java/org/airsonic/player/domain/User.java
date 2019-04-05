@@ -28,7 +28,7 @@ public class User {
 
     public static final String USERNAME_ADMIN = "admin";
     public static final String USERNAME_GUEST = "guest";
-    public static final String USERNAME_SONOS = "sonos";
+    public static final String USERNAME_SONOS = "simon";
 
 
     private final String username;
