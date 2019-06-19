@@ -258,7 +258,7 @@
             <sub:param name="q" value="\"${model.artist}\" \"${model.album}\""/>
             <sub:param name="type" value="album"/>
         </sub:url>
-        <span class="header"><fmt:message key="top.search"/> <a target="_blank" href="${googleUrl}">Google</a></span> |
+        <span class="header"><fmt:message key="top.search"/><%-- <a target="_blank" href="${googleUrl}">Google</a> --%></span> |
         <span class="header"><a target="_blank" href="${wikipediaUrl}">Wikipedia</a></span> |
         <span class="header"><a target="_blank" href="${allmusicUrl}">allmusic</a></span> |
         <span class="header"><a target="_blank" href="${lastFmUrl}">Last.fm</a></span> |
